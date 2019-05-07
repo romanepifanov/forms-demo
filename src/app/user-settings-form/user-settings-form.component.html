@@ -1,13 +1,14 @@
 <div class="container">
   <h2>User settings</h2>
-  <form>
+  <form #form="ngForm">
     <div class="form-group">
       <label for="name">Name</label>
-      <input id="name" name="name" class="form-control" />
+      <input id="name" name="name" class="form-control" [(ngModel)]="userSettings.name" />
     </div>
 
     <div class="form-check form-group">
-      <input type="checkbox" id="emailOffers" name="emailOffers" class="form-check-input" />
+      <input type="checkbox" id="emailOffers" name="emailOffers" class="form-check-input"
+        [(ngModel)]="userSettings.emailOffers" />
       <label class="form-check-label" for="emailOffers">Email special offers</label>
     </div>
 
@@ -15,21 +16,21 @@
     <div class="form-group">
       <div class="form-check" *ngFor="let interface of interfacies">
         <input type="radio" id="{{interface.id}}" name="interfaceStyle" value="{{interface.value}}"
-          class="form-check-input" />
+          class="form-check-input" [(ngModel)]="userSettings.interfaceStyle" />
         <label class="form-check-label" for="{{interface.id}}">{{interface.label}}</label>
       </div>
     </div>
 
     <div class="form-group">
       <label for="subscriptionType">Subscription type</label>
-      <select id="subscriptionType" class="form-control">
+      <select id="subscriptionType" class="form-control" name="subscriptionType" [(ngModel)]="userSettings.subscriptionType">
         <option *ngFor="let type of subscriptionTypes">{{type}}</option>
       </select>
     </div>
 
     <div class="form-group">
       <label for="notes">Notes</label>
-      <textarea name="notes" id="notes" rows="3" class="form-control"></textarea>
+      <textarea name="notes" id="notes" rows="3" class="form-control" [(ngModel)]="userSettings.notes"></textarea>
     </div>
 
     <button class="btn btn-primary">Ok</button>
