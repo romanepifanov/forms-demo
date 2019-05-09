@@ -1,9 +1,11 @@
 <div class="container">
   <h2>User settings</h2>
-  <form #form="ngForm">
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)">
     <div class="form-group">
       <label for="name">Name</label>
-      <input id="name" name="name" class="form-control" [(ngModel)]="userSettings.name" />
+      <input id="name" name="name" class="form-control" [(ngModel)]="userSettings.name" #nameField="ngModel" required
+        [ngClass]="{'field-error': form.submitted && nameField.invalid}" />
+      <div  [hidden]="!form.submitted || nameField.valid" class="alert alert-danger">Enater a name</div>
     </div>
 
     <div class="form-check form-group">
@@ -33,6 +35,7 @@
       <textarea name="notes" id="notes" rows="3" class="form-control" [(ngModel)]="userSettings.notes"></textarea>
     </div>
 
+    <div  [hidden]="!postError" class="alert alert-danger">{{postErrorMessage}}</div>
     <button class="btn btn-primary">Ok</button>
   </form>
 </div>

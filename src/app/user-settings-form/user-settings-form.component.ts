@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { InterfaceStyle } from '../models/interface';
 import { UserSettings } from '../models/user-settings';
+import { DataService } from '../services/data.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-user-settings-form',
@@ -9,12 +11,14 @@ import { UserSettings } from '../models/user-settings';
 })
 
 export class UserSettingsFormComponent implements OnInit {
+  private postError = false;
+  private postErrorMessage = '';
   private originalUserSettings: UserSettings = {
-    name: 'Roman',
-    emailOffers: true,
-    interfaceStyle: 'dark',
-    subscriptionType: 'Annual',
-    notes: 'here are some notes...'
+    name: null,
+    emailOffers: null,
+    interfaceStyle: null,
+    subscriptionType: null,
+    notes: null
   };
   private userSettings: UserSettings = { ...this.originalUserSettings };
   private subscriptionTypes: Array<string> = ['Monthly', 'Annual', 'Lifetime'];
@@ -24,9 +28,31 @@ export class UserSettingsFormComponent implements OnInit {
     { id: 'darkInterface', value: 'dark', label: 'Dark' }
   ];
 
-  constructor() { }
+  constructor(
+    private dateService: DataService
+  ) { }
 
   ngOnInit() {
+  }
+
+  onHttpError(errorResponse: any) {
+    console.log('error: ', errorResponse);
+    this.postError = true;
+    this.postErrorMessage = errorResponse.error.errorMessage;
+  }
+
+  onSubmit(form: NgForm) {
+
+    if (form.valid) {
+      this.dateService.postUserSettingsForm(this.userSettings).subscribe(
+        responce => console.log('success: ', responce),
+        error => this.onHttpError(error)
+      );
+    } else {
+      this.postError = true;
+      this.postErrorMessage = 'Please fix the above errors';
+    }
+
   }
 
 }
